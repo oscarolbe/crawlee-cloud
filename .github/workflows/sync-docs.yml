@@ -39,13 +39,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout platform (source of truth)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: platform
           # Default depth=1 is fine — we only need the current `docs/`.
 
       - name: Checkout website (sync target)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: crawlee-cloud/crawlee-cloud.github.io
           path: website
