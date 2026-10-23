@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Security
+
+- **Node.js 24.22.1 for all images (CVE-2026-111497)** — the API, runner, dashboard and actor-base images moved from Node 20, which is end-of-life and gets no fix, to `24.22.1`, which patches the remote code execution bug in Node's Brotli decoder (October 2026 Node.js security release). CI now runs on Node 24. **Rebuild and redeploy your images**; pulling the same tags is not enough on older installs.
+
 ### Self-hosting
 
 - **MinIO image replaced: `minio/minio` and `minio/mc` can no longer be pulled** (#121) — from Docker Hub or quay.io, so fresh installs failed on first `docker compose up`. `docker-compose.yml`, `docker-compose.dev.yml`, `deploy/vps/docker-compose.prod.yml` and the Render and Railway templates now pin `bitnamilegacy/minio:2025.7.23-debian-12-r5`, the image CI already used. It creates the `crawlee-cloud` bucket at startup (`MINIO_DEFAULT_BUCKETS`), which replaces the `minio-init`/`mc` job; the dev compose now creates the bucket too (it never did), and Render and Railway get it for the first time. The compose healthcheck reports healthy only once the bucket exists. The Render template also now uses `runtime: image` (its `repo:` pointed at a Docker Hub page, which Render can't build from). This is a stopgap: the Bitnami legacy archive is unmaintained, and a move to SeaweedFS is tracked separately.

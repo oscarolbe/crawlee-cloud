@@ -37,7 +37,8 @@ export async function configureHttp(app: FastifyInstance): Promise<void> {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
-  // Enable compression/decompression (handles gzip request bodies from SDK)
+  // Enable compression/decompression of request bodies: the Apify SDK sends
+  // Brotli since apify-client 2.24 (gzip before), so all three encodings stay on.
   await app.register(compress, { global: true });
 
   // Add content type parsers for Apify SDK compatibility
