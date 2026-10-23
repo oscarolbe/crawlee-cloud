@@ -37,8 +37,11 @@ export async function configureHttp(app: FastifyInstance): Promise<void> {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
-  // Enable compression/decompression (handles gzip request bodies from SDK)
-  await app.register(compress, { global: true });
+  // Enable compression/decompression (handles gzip request bodies from SDK).
+  // Brotli request decoding is deliberately off: the SDK only sends gzip, and
+  // it keeps unauthenticated input away from Node's Brotli decoder
+  // (CVE-2026-111497). Responses can still be Brotli-compressed.
+  await app.register(compress, { global: true, requestEncodings: ['gzip', 'deflate'] });
 
   // Add content type parsers for Apify SDK compatibility
   // The SDK sends form-urlencoded for some endpoints

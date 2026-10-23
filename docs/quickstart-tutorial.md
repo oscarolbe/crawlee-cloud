@@ -146,7 +146,7 @@ The scraper uses the standard **Apify SDK** (`Actor.init()`, `Actor.pushData()`)
 Create **`Dockerfile`**:
 
 ```dockerfile
-FROM node:20-alpine
+FROM node:24-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
